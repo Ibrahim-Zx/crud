@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'package:crud/services/firestore.dart';
 import 'package:crud/util/dialog_box.dart';
 import 'package:flutter/material.dart';
@@ -22,37 +24,35 @@ class _AddNewUserState extends State<AddNewUser> {
   final _salaryController = TextEditingController();
 
   confirmAddUser() {
-    //if (_formKey.currentState?.validate() ?? false) {
-    // Process data if form is valid
+    if (_formKey.currentState?.validate() ?? false) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return DialogBox(
+              dialog: 'Are You Sure, You wanna Create a new user',
+              onClickSave: () {
+                firestoreService.addUser(
+                  _nameController.text,
+                  _eMailController.text,
+                  _mobileController.text,
+                  _ageController.text,
+                  _jobDiscriptionController.text,
+                  _salaryController.text,
+                );
+                Fluttertoast.showToast(
+                  msg: 'The User has Added Successfully',
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.SNACKBAR,
+                  backgroundColor: Colors.black54,
+                  textColor: Colors.white,
+                );
 
-    showDialog(
-        context: context,
-        builder: (context) {
-          return DialogBox(
-            dialog: 'Are You Sure, You wanna Create a new user',
-            onClickSave: () {
-              firestoreService.addUser(
-                _nameController.text,
-                _eMailController.text,
-                _mobileController.text,
-                _ageController.text,
-                _jobDiscriptionController.text,
-                _salaryController.text,
-              );
-              Fluttertoast.showToast(
-                msg: 'The User has Added Successfully',
-                toastLength: Toast.LENGTH_LONG,
-                gravity: ToastGravity.SNACKBAR,
-                backgroundColor: Colors.black54,
-                textColor: Colors.white,
-              );
-
-              Navigator.pop(context);
-              Navigator.pop(context);
-            },
-          );
-        });
-    //}
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            );
+          });
+    }
   }
 
   @override
@@ -185,6 +185,7 @@ class _AddNewUserState extends State<AddNewUser> {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 10),
       child: TextFormField(
+        keyboardType: TextInputType.number,
         controller: _mobileController,
         decoration: InputDecoration(
           labelText: 'Number',
@@ -195,6 +196,8 @@ class _AddNewUserState extends State<AddNewUser> {
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'This field is required';
+          } else if (value != int) {
+            return 'The entered value should be a number';
           }
           return null;
         },
@@ -218,6 +221,7 @@ class _AddNewUserState extends State<AddNewUser> {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 10),
       child: TextFormField(
+        keyboardType: TextInputType.number,
         controller: _ageController,
         decoration: InputDecoration(
           labelText: 'Age',
@@ -228,6 +232,8 @@ class _AddNewUserState extends State<AddNewUser> {
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'This field is required';
+          } else if (value != int) {
+            return 'The entered value should be a number';
           }
           return null;
         },
@@ -284,6 +290,7 @@ class _AddNewUserState extends State<AddNewUser> {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 10),
       child: TextFormField(
+        keyboardType: TextInputType.number,
         controller: _salaryController,
         decoration: InputDecoration(
           labelText: 'Salary',
@@ -294,6 +301,8 @@ class _AddNewUserState extends State<AddNewUser> {
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'This field is required';
+          } else if (value != int) {
+            return 'The entered value should be a number';
           }
           return null;
         },

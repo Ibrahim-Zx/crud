@@ -9,7 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class DetailedView extends StatefulWidget {
   final String docID;
-  DetailedView({
+  const DetailedView({
     super.key,
     required this.docID,
   });

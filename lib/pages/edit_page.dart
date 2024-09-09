@@ -200,6 +200,7 @@ class _EditPageState extends State<EditPage> {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 10),
       child: TextFormField(
+        keyboardType: TextInputType.number,
         controller: _mobileController,
         decoration: InputDecoration(
           labelText: 'Number',
@@ -210,6 +211,8 @@ class _EditPageState extends State<EditPage> {
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'This field is required';
+          } else if (value != int) {
+            return 'The entered value should be a number';
           }
           return null;
         },
@@ -233,6 +236,7 @@ class _EditPageState extends State<EditPage> {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 10),
       child: TextFormField(
+        keyboardType: TextInputType.number,
         controller: _ageController,
         decoration: InputDecoration(
           labelText: 'Age',
@@ -243,6 +247,8 @@ class _EditPageState extends State<EditPage> {
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'This field is required';
+          } else if (value != int) {
+            return 'The entered value should be a number';
           }
           return null;
         },
@@ -299,6 +305,7 @@ class _EditPageState extends State<EditPage> {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 10),
       child: TextFormField(
+        keyboardType: TextInputType.number,
         controller: _salaryController,
         decoration: InputDecoration(
           labelText: 'Salary',
@@ -309,6 +316,8 @@ class _EditPageState extends State<EditPage> {
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'This field is required';
+          } else if (value != int) {
+            return 'The entered value should be a number';
           }
           return null;
         },
