@@ -4,6 +4,7 @@ import 'package:crud/pages/detailed_view.dart';
 import 'package:crud/services/firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -23,18 +24,26 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
-        title: const Text('User List'),
+        backgroundColor: Colors.deepPurple,
+        title: Text(
+          'User List',
+          style: GoogleFonts.merienda(
+            color: Colors.white,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: signOut,
-            icon: const Icon(Icons.logout_sharp),
+            icon: const Icon(
+              Icons.logout_sharp,
+              color: Colors.white,
+            ),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.amber,
-        foregroundColor: Colors.black,
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
         onPressed: () {
           Navigator.push(
             context,
@@ -43,7 +52,10 @@ class _MainPageState extends State<MainPage> {
             ),
           );
         },
-        label: const Text('Add New User'),
+        label: Text(
+          'Add New User',
+          style: GoogleFonts.merienda(),
+        ),
       ),
       body: StreamBuilder(
         stream: firestoreService.getUserStream(),
@@ -51,7 +63,7 @@ class _MainPageState extends State<MainPage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(
-                color: Colors.amber,
+                color: Colors.deepPurple,
               ),
             );
           }
@@ -93,7 +105,7 @@ class _MainPageState extends State<MainPage> {
                     child: Container(
                       height: 80,
                       decoration: BoxDecoration(
-                        color: Colors.amber[200],
+                        color: Colors.deepPurple[200],
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Padding(
@@ -107,18 +119,21 @@ class _MainPageState extends State<MainPage> {
                               children: [
                                 Text(
                                   userName,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
+                                  style: GoogleFonts.merienda(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                                 Text(
                                   userEmail,
-                                  style: const TextStyle(color: Colors.blue),
+                                  style: GoogleFonts.merienda(
+                                    color: Colors.indigo[900],
+                                  ),
                                 ),
                               ],
                             ),
                             const Icon(
                               Icons.chevron_right_sharp,
-                              color: Colors.amber,
+                              color: Colors.deepPurple,
                               size: 40,
                             )
                           ],

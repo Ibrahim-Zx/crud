@@ -3,6 +3,7 @@ import 'package:crud/services/firestore.dart';
 import 'package:crud/util/dialog_box.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EditPage extends StatefulWidget {
   final String docID;
@@ -85,7 +86,7 @@ class _EditPageState extends State<EditPage> {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.SNACKBAR,
         backgroundColor: Colors.black54,
-        textColor: Colors.white,
+        textColor: Colors.black,
       );
       Navigator.pop(context);
     });
@@ -109,10 +110,13 @@ class _EditPageState extends State<EditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
-        title: const Text(
+        backgroundColor: Colors.deepPurple,
+        title: Text(
           'Edit User Details',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: GoogleFonts.merienda(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),
@@ -164,6 +168,7 @@ class _EditPageState extends State<EditPage> {
         controller: _nameController,
         decoration: InputDecoration(
           labelText: 'Name',
+          labelStyle: GoogleFonts.merienda(),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -197,6 +202,7 @@ class _EditPageState extends State<EditPage> {
         controller: _eMailController,
         decoration: InputDecoration(
           labelText: 'E-Mail',
+          labelStyle: GoogleFonts.merienda(),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -231,6 +237,7 @@ class _EditPageState extends State<EditPage> {
         controller: _mobileController,
         decoration: InputDecoration(
           labelText: 'Number',
+          labelStyle: GoogleFonts.merienda(),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -267,6 +274,7 @@ class _EditPageState extends State<EditPage> {
         controller: _ageController,
         decoration: InputDecoration(
           labelText: 'Age',
+          labelStyle: GoogleFonts.merienda(),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -302,6 +310,7 @@ class _EditPageState extends State<EditPage> {
         controller: _jobDiscriptionController,
         decoration: InputDecoration(
           labelText: 'Job Discription',
+          labelStyle: GoogleFonts.merienda(),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -336,6 +345,7 @@ class _EditPageState extends State<EditPage> {
         controller: _salaryController,
         decoration: InputDecoration(
           labelText: 'Salary',
+          labelStyle: GoogleFonts.merienda(),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -358,13 +368,14 @@ class _EditPageState extends State<EditPage> {
       child: Container(
         height: 50,
         decoration: BoxDecoration(
-          color: Colors.amber,
+          color: Colors.deepPurple,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: const Center(
+        child: Center(
           child: Text(
             'U P D A T E',
-            style: TextStyle(
+            style: GoogleFonts.merienda(
+              color: Colors.white,
               fontSize: 17,
               fontWeight: FontWeight.bold,
             ),

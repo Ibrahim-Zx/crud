@@ -15,7 +15,7 @@
 // //   Widget build(BuildContext context) {
 // //     return Scaffold(
 // //       appBar: AppBar(
-// //         backgroundColor: Colors.amber,
+// //         backgroundColor: Colors.deepPurple,
 // //         title: const Text(
 // //           'User Details',
 // //           style: TextStyle(fontWeight: FontWeight.bold),
@@ -25,7 +25,7 @@
 // //       floatingActionButton: FloatingActionButton.extended(
 // //         onPressed: () {},
 // //         label: const Text('Edit'),
-// //         backgroundColor: Colors.amber,
+// //         backgroundColor: Colors.deepPurple,
 // //         foregroundColor: Colors.black,
 // //       ),
 // //       body: Center(
@@ -36,7 +36,7 @@
 // //             height: double.infinity,
 // //             width: double.infinity,
 // //             decoration: BoxDecoration(
-// //               color: Colors.amber[100],
+// //               color: Colors.deepPurple[100],
 // //               borderRadius: BorderRadius.circular(10),
 // //             ),
 // //             child: const Column(
@@ -122,7 +122,7 @@
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         backgroundColor: Colors.amber,
+//         backgroundColor: Colors.deepPurple,
 //         title: const Text(
 //           'User Details',
 //           style: TextStyle(fontWeight: FontWeight.bold),
@@ -132,7 +132,7 @@
 //       floatingActionButton: FloatingActionButton.extended(
 //         onPressed: () {},
 //         label: const Text('Edit'),
-//         backgroundColor: Colors.amber,
+//         backgroundColor: Colors.deepPurple,
 //         foregroundColor: Colors.black,
 //       ),
 //       body: Center(
@@ -143,7 +143,7 @@
 //             height: double.infinity,
 //             width: double.infinity,
 //             decoration: BoxDecoration(
-//               color: Colors.amber[100],
+//               color: Colors.deepPurple[100],
 //               borderRadius: BorderRadius.circular(10),
 //             ),
 //             child: Column(
@@ -264,7 +264,7 @@
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         backgroundColor: Colors.amber,
+//         backgroundColor: Colors.deepPurple,
 //         title: const Text(
 //           'User Details',
 //           style: TextStyle(fontWeight: FontWeight.bold),
@@ -274,7 +274,7 @@
 //       floatingActionButton: FloatingActionButton.extended(
 //         onPressed: () {},
 //         label: const Text('Edit'),
-//         backgroundColor: Colors.amber,
+//         backgroundColor: Colors.deepPurple,
 //         foregroundColor: Colors.black,
 //       ),
 //       body: Center(
@@ -285,7 +285,7 @@
 //             height: double.infinity,
 //             width: double.infinity,
 //             decoration: BoxDecoration(
-//               color: Colors.amber[100],
+//               color: Colors.deepPurple[100],
 //               borderRadius: BorderRadius.circular(10),
 //             ),
 //             child: Column(

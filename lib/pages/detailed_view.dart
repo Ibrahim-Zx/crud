@@ -6,6 +6,7 @@ import 'package:crud/services/firestore.dart';
 import 'package:crud/util/dialog_box.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DetailedView extends StatefulWidget {
   final String docID;
@@ -39,7 +40,7 @@ class _DetailedViewState extends State<DetailedView> {
                 toastLength: Toast.LENGTH_LONG,
                 gravity: ToastGravity.SNACKBAR,
                 backgroundColor: Colors.black54,
-                textColor: Colors.white,
+                textColor: Colors.black,
               );
 
               Navigator.of(context).pop();
@@ -52,10 +53,13 @@ class _DetailedViewState extends State<DetailedView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
-        title: const Text(
+        backgroundColor: Colors.deepPurple,
+        title: Text(
           'User Details',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: GoogleFonts.merienda(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
         actions: [
@@ -63,15 +67,18 @@ class _DetailedViewState extends State<DetailedView> {
               onPressed: () {},
               icon: const Icon(
                 Icons.replay_outlined,
-                color: Colors.black,
+                color: Colors.white,
               )),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: confirmDeleteUser,
-        label: const Text('Delete'),
-        backgroundColor: Colors.amber,
-        foregroundColor: Colors.black,
+        label: Text(
+          'Delete',
+          style: GoogleFonts.merienda(),
+        ),
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
       ),
       body: Center(
         child: Padding(
@@ -81,7 +88,7 @@ class _DetailedViewState extends State<DetailedView> {
             height: double.infinity,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: Colors.amber[100],
+              color: Colors.deepPurple[100],
               borderRadius: BorderRadius.circular(10),
             ),
             child: Padding(
@@ -123,7 +130,7 @@ class _DetailedViewState extends State<DetailedView> {
                         children: [
                           Text(
                             'doc ID : ${widget.docID}',
-                            style: const TextStyle(
+                            style: GoogleFonts.jacquesFrancois(
                               color: Colors.red,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -132,27 +139,27 @@ class _DetailedViewState extends State<DetailedView> {
                           const SizedBox(height: 50),
                           Text(
                             'Name: ${data['Name'] ?? 'N/A'}',
-                            style: const TextStyle(fontSize: 18),
+                            style: GoogleFonts.jacquesFrancois(fontSize: 18),
                           ),
                           Text(
                             'Email: ${data['Email'] ?? 'N/A'}',
-                            style: const TextStyle(fontSize: 18),
+                            style: GoogleFonts.jacquesFrancois(fontSize: 18),
                           ),
                           Text(
                             'Mobile: ${data['Mobile'] ?? 'N/A'}',
-                            style: const TextStyle(fontSize: 18),
+                            style: GoogleFonts.jacquesFrancois(fontSize: 18),
                           ),
                           Text(
                             'Age: ${data['Age'] ?? 'N/A'}',
-                            style: const TextStyle(fontSize: 18),
+                            style: GoogleFonts.jacquesFrancois(fontSize: 18),
                           ),
                           Text(
                             'Job Discription: ${data['Job Discription'] ?? 'N/A'}',
-                            style: const TextStyle(fontSize: 18),
+                            style: GoogleFonts.jacquesFrancois(fontSize: 18),
                           ),
                           Text(
                             'Salary: ${data['Salary'] ?? 'N/A'}',
-                            style: const TextStyle(fontSize: 18),
+                            style: GoogleFonts.jacquesFrancois(fontSize: 18),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -172,13 +179,14 @@ class _DetailedViewState extends State<DetailedView> {
                                 height: 50,
                                 width: 100,
                                 decoration: BoxDecoration(
-                                  color: Colors.amber,
+                                  color: Colors.deepPurple,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: const Center(
+                                child: Center(
                                   child: Text(
                                     'Edit',
-                                    style: TextStyle(
+                                    style: GoogleFonts.merienda(
+                                      color: Colors.white,
                                       fontSize: 17,
                                       fontWeight: FontWeight.bold,
                                     ),

@@ -6,7 +6,7 @@ class FirestoreService {
       FirebaseFirestore.instance.collection("users");
   //create : add a note
   Future<void> addUser(
-    String user,
+    String name,
     String email,
     String mobile,
     String age,
@@ -14,7 +14,7 @@ class FirestoreService {
     String salary,
   ) {
     return users.add({
-      'Name': user,
+      'Name': name,
       'Email': email,
       'Mobile': mobile,
       'Age': age,

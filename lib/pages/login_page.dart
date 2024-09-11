@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.amber[100],
+      backgroundColor: Colors.deepPurple[100],
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                     controller: _eMailController,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.amber[200],
+                      fillColor: Colors.deepPurple[200],
                       hintText: 'e-mail or mobile number',
                       border: OutlineInputBorder(
                         borderSide: const BorderSide(),
@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.amber[200],
+                      fillColor: Colors.deepPurple[200],
                       hintText: 'password',
                       border: OutlineInputBorder(
                         borderSide: const BorderSide(),
@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Container(
                     margin: const EdgeInsets.only(top: 20, bottom: 20),
                     decoration: BoxDecoration(
-                      color: Colors.amber,
+                      color: Colors.deepPurple,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Center(

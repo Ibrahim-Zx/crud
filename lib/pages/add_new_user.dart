@@ -4,6 +4,7 @@ import 'package:crud/services/firestore.dart';
 import 'package:crud/util/dialog_box.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AddNewUser extends StatefulWidget {
   const AddNewUser({super.key});
@@ -44,7 +45,7 @@ class _AddNewUserState extends State<AddNewUser> {
                   toastLength: Toast.LENGTH_LONG,
                   gravity: ToastGravity.SNACKBAR,
                   backgroundColor: Colors.black54,
-                  textColor: Colors.white,
+                  textColor: Colors.black,
                 );
 
                 Navigator.pop(context);
@@ -71,8 +72,13 @@ class _AddNewUserState extends State<AddNewUser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
-        title: const Text('Add New User'),
+        backgroundColor: Colors.deepPurple,
+        title: Text(
+          'Add New User',
+          style: GoogleFonts.merienda(
+            color: Colors.white,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -122,6 +128,7 @@ class _AddNewUserState extends State<AddNewUser> {
         controller: _nameController,
         decoration: InputDecoration(
           labelText: 'Name',
+          labelStyle: GoogleFonts.merienda(),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -155,6 +162,7 @@ class _AddNewUserState extends State<AddNewUser> {
         controller: _eMailController,
         decoration: InputDecoration(
           labelText: 'E-Mail',
+          labelStyle: GoogleFonts.merienda(),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -189,6 +197,7 @@ class _AddNewUserState extends State<AddNewUser> {
         controller: _mobileController,
         decoration: InputDecoration(
           labelText: 'Number',
+          labelStyle: GoogleFonts.merienda(),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -225,6 +234,7 @@ class _AddNewUserState extends State<AddNewUser> {
         controller: _ageController,
         decoration: InputDecoration(
           labelText: 'Age',
+          labelStyle: GoogleFonts.merienda(),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -260,6 +270,7 @@ class _AddNewUserState extends State<AddNewUser> {
         controller: _jobDiscriptionController,
         decoration: InputDecoration(
           labelText: 'Job Discription',
+          labelStyle: GoogleFonts.merienda(),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -294,6 +305,7 @@ class _AddNewUserState extends State<AddNewUser> {
         controller: _salaryController,
         decoration: InputDecoration(
           labelText: 'Salary',
+          labelStyle: GoogleFonts.merienda(),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -316,13 +328,14 @@ class _AddNewUserState extends State<AddNewUser> {
       child: Container(
         height: 50,
         decoration: BoxDecoration(
-          color: Colors.amber,
+          color: Colors.deepPurple,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: const Center(
+        child: Center(
           child: Text(
             'S U B M I T',
-            style: TextStyle(
+            style: GoogleFonts.merienda(
+              color: Colors.white,
               fontSize: 17,
               fontWeight: FontWeight.bold,
             ),
