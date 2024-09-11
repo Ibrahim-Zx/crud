@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crud/services/firestore.dart';
 import 'package:crud/util/dialog_box.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +19,50 @@ class _EditPageState extends State<EditPage> {
   final FirestoreService firestoreService = FirestoreService();
   final _formKey = GlobalKey<FormState>();
 
-  final _nameController = TextEditingController();
-  final _eMailController = TextEditingController();
-  final _mobileController = TextEditingController();
-  final _ageController = TextEditingController();
-  final _jobDiscriptionController = TextEditingController();
-  final _salaryController = TextEditingController();
+  Future<DocumentSnapshot> getDocument(String docID) async {
+    return FirebaseFirestore.instance.collection('users').doc(docID).get();
+  }
+
+  late TextEditingController _nameController;
+  late TextEditingController _eMailController;
+  late TextEditingController _mobileController;
+  late TextEditingController _ageController;
+  late TextEditingController _jobDiscriptionController;
+  late TextEditingController _salaryController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController();
+    _eMailController = TextEditingController();
+    _mobileController = TextEditingController();
+    _ageController = TextEditingController();
+    _jobDiscriptionController = TextEditingController();
+    _salaryController = TextEditingController();
+    _loadData();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _eMailController.dispose();
+    _ageController.dispose();
+    _mobileController.dispose();
+    _jobDiscriptionController.dispose();
+    _salaryController.dispose();
+
+    super.dispose();
+  }
+
+  Future<void> _loadData() async {
+    DocumentSnapshot doc = await getDocument(widget.docID);
+    _nameController.text = doc['Name'];
+    _eMailController.text = doc['Email'];
+    _mobileController.text = doc['Mobile'];
+    _ageController.text = doc['Age'];
+    _jobDiscriptionController.text = doc['Job Discription'];
+    _salaryController.text = doc['Salary'];
+  }
 
   updateData() async {
     Map<String, dynamic> updatedInfo = {
@@ -64,18 +103,6 @@ class _EditPageState extends State<EditPage> {
             );
           });
     }
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _eMailController.dispose();
-    _ageController.dispose();
-    _mobileController.dispose();
-    _jobDiscriptionController.dispose();
-    _salaryController.dispose();
-
-    super.dispose();
   }
 
   @override
@@ -211,7 +238,7 @@ class _EditPageState extends State<EditPage> {
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'This field is required';
-          } else if (value != int) {
+          } else if (int.tryParse(value) == null) {
             return 'The entered value should be a number';
           }
           return null;
@@ -247,7 +274,7 @@ class _EditPageState extends State<EditPage> {
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'This field is required';
-          } else if (value != int) {
+          } else if (int.tryParse(value) == null) {
             return 'The entered value should be a number';
           }
           return null;
@@ -316,7 +343,7 @@ class _EditPageState extends State<EditPage> {
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'This field is required';
-          } else if (value != int) {
+          } else if (int.tryParse(value) == null) {
             return 'The entered value should be a number';
           }
           return null;

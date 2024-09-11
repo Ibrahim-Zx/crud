@@ -196,7 +196,7 @@ class _AddNewUserState extends State<AddNewUser> {
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'This field is required';
-          } else if (value != int) {
+          } else if (int.tryParse(value) == null) {
             return 'The entered value should be a number';
           }
           return null;
@@ -232,7 +232,7 @@ class _AddNewUserState extends State<AddNewUser> {
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'This field is required';
-          } else if (value != int) {
+          } else if (int.tryParse(value) == null) {
             return 'The entered value should be a number';
           }
           return null;
@@ -301,7 +301,7 @@ class _AddNewUserState extends State<AddNewUser> {
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'This field is required';
-          } else if (value != int) {
+          } else if (int.tryParse(value) == null) {
             return 'The entered value should be a number';
           }
           return null;

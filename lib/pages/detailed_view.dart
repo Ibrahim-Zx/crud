@@ -58,6 +58,14 @@ class _DetailedViewState extends State<DetailedView> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.replay_outlined,
+                color: Colors.black,
+              )),
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: confirmDeleteUser,
