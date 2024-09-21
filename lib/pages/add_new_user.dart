@@ -2,6 +2,7 @@
 
 import 'package:crud/services/firestore.dart';
 import 'package:crud/util/dialog_box.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,6 +17,14 @@ class AddNewUser extends StatefulWidget {
 class _AddNewUserState extends State<AddNewUser> {
   final FirestoreService firestoreService = FirestoreService();
   final _formKey = GlobalKey<FormState>();
+  final _companyFormKey = GlobalKey<FormState>();
+  int selectedRadio = 1;
+
+  void setSelectedRadio(int value) {
+    setState(() {
+      selectedRadio = value;
+    });
+  }
 
   final _nameController = TextEditingController();
   final _eMailController = TextEditingController();
@@ -23,6 +32,28 @@ class _AddNewUserState extends State<AddNewUser> {
   final _ageController = TextEditingController();
   final _jobDiscriptionController = TextEditingController();
   final _salaryController = TextEditingController();
+  final _companyNameController = TextEditingController();
+  final _companyEmailController = TextEditingController();
+  final _companyNumberController = TextEditingController();
+  final _companyAddressController = TextEditingController();
+  final _companyDiscriptionController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _eMailController.dispose();
+    _ageController.dispose();
+    _mobileController.dispose();
+    _jobDiscriptionController.dispose();
+    _salaryController.dispose();
+    _companyNameController.dispose();
+    _companyEmailController.dispose();
+    _companyNumberController.dispose();
+    _companyAddressController.dispose();
+    _companyDiscriptionController.dispose();
+
+    super.dispose();
+  }
 
   confirmAddUser() {
     if (_formKey.currentState?.validate() ?? false) {
@@ -45,7 +76,7 @@ class _AddNewUserState extends State<AddNewUser> {
                   toastLength: Toast.LENGTH_LONG,
                   gravity: ToastGravity.SNACKBAR,
                   backgroundColor: Colors.black54,
-                  textColor: Colors.black,
+                  textColor: Colors.white,
                 );
 
                 Navigator.pop(context);
@@ -56,16 +87,35 @@ class _AddNewUserState extends State<AddNewUser> {
     }
   }
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _eMailController.dispose();
-    _ageController.dispose();
-    _mobileController.dispose();
-    _jobDiscriptionController.dispose();
-    _salaryController.dispose();
+  confirmAddCompany() {
+    if (_companyFormKey.currentState?.validate() ?? false) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return DialogBox(
+              dialog: 'Are You Sure, You wanna Create a new Company',
+              onClickSave: () {
+                firestoreService.addCompany(
+                  _companyNameController.text,
+                  _companyEmailController.text,
+                  _companyNameController.text,
+                  _companyAddressController.text,
+                  _companyDiscriptionController.text,
+                );
+                Fluttertoast.showToast(
+                  msg: 'The Company has Added Successfully',
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.SNACKBAR,
+                  backgroundColor: Colors.black54,
+                  textColor: Colors.white,
+                );
 
-    super.dispose();
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            );
+          });
+    }
   }
 
   @override
@@ -83,43 +133,75 @@ class _AddNewUserState extends State<AddNewUser> {
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                // nameTitle(),
-                nameTextField(),
-                // eMailTitle(),
-                eMailTextField(),
-                // numberTitle(),
-                numberTextField(),
-                // ageTitle(),
-                ageTextField(),
-                // jobDiscriptionTitle(),
-                jobDiscriptionTextField(),
-                // salaryTitle(),
-                salaryTextField(),
-                const SizedBox(height: 15),
-                createNewUser(),
-              ],
-            ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: ListTile(
+                      title: const Text('Customer Info'),
+                      leading: Radio(
+                          value: 1,
+                          groupValue: selectedRadio,
+                          onChanged: (value) {
+                            setSelectedRadio(value as int);
+                          }),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListTile(
+                      title: const Text('Company Info'),
+                      leading: Radio(
+                          value: 2,
+                          groupValue: selectedRadio,
+                          onChanged: (value) {
+                            setSelectedRadio(value as int);
+                          }),
+                    ),
+                  ),
+                ],
+              ),
+              Visibility(
+                visible: selectedRadio == 1,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      nameTextField(),
+                      eMailTextField(),
+                      numberTextField(),
+                      ageTextField(),
+                      jobDiscriptionTextField(),
+                      salaryTextField(),
+                      const SizedBox(height: 15),
+                      createNewUser(),
+                    ],
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: selectedRadio == 2,
+                child: Form(
+                  key: _companyFormKey,
+                  child: Column(
+                    children: [
+                      companyNameTextField(),
+                      companyEmailTextField(),
+                      companyNumberTextField(),
+                      companyAddressTextField(),
+                      companyDiscriptionTextField(),
+                      const SizedBox(height: 15),
+                      createNewCompany(),
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),
     );
   }
-
-  // nameTitle() {
-  //   return const Row(
-  //     mainAxisAlignment: MainAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         'Name',
-  //         style: TextStyle(fontSize: 16),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   nameTextField() {
     return Padding(
@@ -143,18 +225,6 @@ class _AddNewUserState extends State<AddNewUser> {
     );
   }
 
-  // eMailTitle() {
-  //   return const Row(
-  //     mainAxisAlignment: MainAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         'E-Mail',
-  //         style: TextStyle(fontSize: 16),
-  //       ),
-  //     ],
-  //   );
-  // }
-
   eMailTextField() {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 10),
@@ -167,27 +237,15 @@ class _AddNewUserState extends State<AddNewUser> {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'This field is required';
+        validator: (val) {
+          if (val == null || !EmailValidator.validate(val)) {
+            return 'Please enter a valid email';
           }
           return null;
         },
       ),
     );
   }
-
-  // numberTitle() {
-  //   return const Row(
-  //     mainAxisAlignment: MainAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         'Number',
-  //         style: TextStyle(fontSize: 16),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   numberTextField() {
     return Padding(
@@ -214,18 +272,6 @@ class _AddNewUserState extends State<AddNewUser> {
     );
   }
 
-  // ageTitle() {
-  //   return const Row(
-  //     mainAxisAlignment: MainAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         'Age',
-  //         style: TextStyle(fontSize: 16),
-  //       ),
-  //     ],
-  //   );
-  // }
-
   ageTextField() {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 10),
@@ -251,18 +297,6 @@ class _AddNewUserState extends State<AddNewUser> {
     );
   }
 
-  // jobDiscriptionTitle() {
-  //   return const Row(
-  //     mainAxisAlignment: MainAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         'Job Discription',
-  //         style: TextStyle(fontSize: 16),
-  //       ),
-  //     ],
-  //   );
-  // }
-
   jobDiscriptionTextField() {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 10),
@@ -284,18 +318,6 @@ class _AddNewUserState extends State<AddNewUser> {
       ),
     );
   }
-
-  // salaryTitle() {
-  //   return const Row(
-  //     mainAxisAlignment: MainAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         'Salary',
-  //         style: TextStyle(fontSize: 16),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   salaryTextField() {
     return Padding(
@@ -325,6 +347,140 @@ class _AddNewUserState extends State<AddNewUser> {
   createNewUser() {
     return GestureDetector(
       onTap: confirmAddUser,
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.deepPurple,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Center(
+          child: Text(
+            'S U B M I T',
+            style: GoogleFonts.merienda(
+              color: Colors.white,
+              fontSize: 17,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  companyNameTextField() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 10),
+      child: TextFormField(
+        controller: _companyNameController,
+        decoration: InputDecoration(
+          labelText: 'Company Name',
+          labelStyle: GoogleFonts.merienda(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'This field is required';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  companyEmailTextField() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 10),
+      child: TextFormField(
+        controller: _companyEmailController,
+        decoration: InputDecoration(
+          labelText: 'Company Email',
+          labelStyle: GoogleFonts.merienda(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        validator: (val) {
+          EmailValidator.validate(val!) ? null : 'Please enter valid e-mail';
+          return null;
+        },
+      ),
+    );
+  }
+
+  companyNumberTextField() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 10),
+      child: TextFormField(
+        keyboardType: TextInputType.number,
+        controller: _companyNumberController,
+        decoration: InputDecoration(
+          labelText: 'Company Number',
+          labelStyle: GoogleFonts.merienda(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'This field is required';
+          } else if (int.tryParse(value) == null) {
+            return 'The entered value should be a number';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  companyAddressTextField() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 10),
+      child: TextFormField(
+        controller: _companyAddressController,
+        decoration: InputDecoration(
+          labelText: 'Company Address',
+          labelStyle: GoogleFonts.merienda(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'This field is required';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  companyDiscriptionTextField() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 10),
+      child: TextFormField(
+        controller: _companyDiscriptionController,
+        decoration: InputDecoration(
+          labelText: 'Company Discription',
+          labelStyle: GoogleFonts.merienda(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'This field is required';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  createNewCompany() {
+    return GestureDetector(
+      onTap: confirmAddCompany,
       child: Container(
         height: 50,
         decoration: BoxDecoration(

@@ -23,6 +23,22 @@ class FirestoreService {
     });
   }
 
+  Future<void> addCompany(
+    String companyName,
+    String companyEmail,
+    String companyMobile,
+    String companyAddress,
+    String companyDiscription,
+  ) {
+    return users.add({
+      'Company Name': companyName,
+      'Company Email': companyEmail,
+      'Company Mobile': companyMobile,
+      'Company Address': companyAddress,
+      'Company Discription': companyDiscription,
+    });
+  }
+
   //read : display the note
   Stream<QuerySnapshot> getUserStream() {
     final userStream = FirebaseFirestore.instance

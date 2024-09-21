@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crud/services/firestore.dart';
 import 'package:crud/util/dialog_box.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -86,7 +87,7 @@ class _EditPageState extends State<EditPage> {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.SNACKBAR,
         backgroundColor: Colors.black54,
-        textColor: Colors.black,
+        textColor: Colors.white,
       );
       Navigator.pop(context);
     });
@@ -96,13 +97,14 @@ class _EditPageState extends State<EditPage> {
     if (_formKey.currentState?.validate() ?? false) {
       // Process data if form is valid
       showDialog(
-          context: context,
-          builder: (context) {
-            return DialogBox(
-              dialog: 'Are You Sure, You wanna Update the existing user',
-              onClickSave: updateData,
-            );
-          });
+        context: context,
+        builder: (context) {
+          return DialogBox(
+            dialog: 'Are You Sure, You wanna Update the existing user',
+            onClickSave: updateData,
+          );
+        },
+      );
     }
   }
 
@@ -208,8 +210,10 @@ class _EditPageState extends State<EditPage> {
           ),
         ),
         validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'This field is required';
+          final bool isValid = EmailValidator.validate(value.toString().trim());
+
+          if (!isValid) {
+            return 'Enter a valid e-mail';
           }
           return null;
         },

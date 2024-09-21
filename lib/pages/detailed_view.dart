@@ -40,7 +40,7 @@ class _DetailedViewState extends State<DetailedView> {
                 toastLength: Toast.LENGTH_LONG,
                 gravity: ToastGravity.SNACKBAR,
                 backgroundColor: Colors.black54,
-                textColor: Colors.black,
+                textColor: Colors.white,
               );
 
               Navigator.of(context).pop();
@@ -132,7 +132,7 @@ class _DetailedViewState extends State<DetailedView> {
                             'doc ID : ${widget.docID}',
                             style: GoogleFonts.jacquesFrancois(
                               color: Colors.red,
-                              fontSize: 18,
+                              fontSize: 15,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -161,9 +161,10 @@ class _DetailedViewState extends State<DetailedView> {
                             'Salary: ${data['Salary'] ?? 'N/A'}',
                             style: GoogleFonts.jacquesFrancois(fontSize: 18),
                           ),
+                          const SizedBox(height: 50),
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 50, horizontal: 105),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 105),
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.push(
