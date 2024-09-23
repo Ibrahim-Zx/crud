@@ -16,7 +16,7 @@ class AddNewUser extends StatefulWidget {
 
 class _AddNewUserState extends State<AddNewUser> {
   final FirestoreService firestoreService = FirestoreService();
-  final _formKey = GlobalKey<FormState>();
+  final _customerFormKey = GlobalKey<FormState>();
   final _companyFormKey = GlobalKey<FormState>();
   int selectedRadio = 1;
 
@@ -56,7 +56,7 @@ class _AddNewUserState extends State<AddNewUser> {
   }
 
   confirmAddUser() {
-    if (_formKey.currentState?.validate() ?? false) {
+    if (_customerFormKey.currentState?.validate() ?? false) {
       showDialog(
           context: context,
           builder: (context) {
@@ -164,7 +164,7 @@ class _AddNewUserState extends State<AddNewUser> {
               Visibility(
                 visible: selectedRadio == 1,
                 child: Form(
-                  key: _formKey,
+                  key: _customerFormKey,
                   child: Column(
                     children: [
                       nameTextField(),
