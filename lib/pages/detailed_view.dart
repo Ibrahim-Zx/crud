@@ -10,9 +10,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 class DetailedView extends StatefulWidget {
   final String docID;
+  final int selectedSlider;
   const DetailedView({
     super.key,
     required this.docID,
+    required this.selectedSlider,
   });
 
   @override
@@ -22,7 +24,7 @@ class DetailedView extends StatefulWidget {
 class _DetailedViewState extends State<DetailedView> {
   final FirestoreService firestoreService = FirestoreService();
 
-  confirmDeleteUser() {
+  confirmDeleteCustomer() {
     showDialog(
         context: context,
         builder: (context) {
@@ -30,7 +32,34 @@ class _DetailedViewState extends State<DetailedView> {
             dialog: 'Are You Sure, You wanna Delete this user',
             onClickSave: () async {
               await firestoreService
-                  .deleteUser(docID: widget.docID)
+                  .deleteCustomer(docID: widget.docID)
+                  .then((onValue) {
+                Navigator.pop(context);
+              });
+
+              Fluttertoast.showToast(
+                msg: 'The User has Deleted Successfully',
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.SNACKBAR,
+                backgroundColor: Colors.black54,
+                textColor: Colors.white,
+              );
+
+              Navigator.of(context).pop();
+            },
+          );
+        });
+  }
+
+  confirmDeleteCompany() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return DialogBox(
+            dialog: 'Are You Sure, You wanna Delete this user',
+            onClickSave: () async {
+              await firestoreService
+                  .deleteCompany(docID: widget.docID)
                   .then((onValue) {
                 Navigator.pop(context);
               });
@@ -64,7 +93,17 @@ class _DetailedViewState extends State<DetailedView> {
         centerTitle: true,
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailedView(
+                      docID: widget.docID,
+                      selectedSlider: widget.selectedSlider,
+                    ),
+                  ),
+                );
+              },
               icon: const Icon(
                 Icons.replay_outlined,
                 color: Colors.white,
@@ -72,7 +111,7 @@ class _DetailedViewState extends State<DetailedView> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: confirmDeleteUser,
+        onPressed: confirmDeleteCustomer,
         label: Text(
           'Delete',
           style: GoogleFonts.merienda(),
@@ -100,105 +139,211 @@ class _DetailedViewState extends State<DetailedView> {
                     size: 150,
                     color: Colors.black54,
                   ),
-                  FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(widget.docID)
-                        .get(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Text('Error : ${snapshot.error}'),
-                        );
-                      }
-                      if (!snapshot.hasData || !snapshot.data!.exists) {
-                        return const Center(
-                          child: Text('No Data Found'),
-                        );
-                      }
+                  Visibility(
+                    visible: widget.selectedSlider == 0,
+                    child: FutureBuilder<DocumentSnapshot>(
+                      future: FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(widget.docID)
+                          .get(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text('Error : ${snapshot.error}'),
+                          );
+                        }
+                        if (!snapshot.hasData || !snapshot.data!.exists) {
+                          return const Center(
+                            child: Text('No Data Found'),
+                          );
+                        }
 
-                      final data =
-                          snapshot.data!.data() as Map<String, dynamic>;
+                        final customerData =
+                            snapshot.data!.data() as Map<String, dynamic>;
 
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'doc ID : ${widget.docID}',
-                            style: GoogleFonts.jacquesFrancois(
-                              color: Colors.red,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'doc ID : ${widget.docID}',
+                              style: GoogleFonts.jacquesFrancois(
+                                color: Colors.red,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 50),
-                          Text(
-                            'Name: ${data['Name'] ?? 'N/A'}',
-                            style: GoogleFonts.jacquesFrancois(fontSize: 18),
-                          ),
-                          Text(
-                            'Email: ${data['Email'] ?? 'N/A'}',
-                            style: GoogleFonts.jacquesFrancois(fontSize: 18),
-                          ),
-                          Text(
-                            'Mobile: ${data['Mobile'] ?? 'N/A'}',
-                            style: GoogleFonts.jacquesFrancois(fontSize: 18),
-                          ),
-                          Text(
-                            'Age: ${data['Age'] ?? 'N/A'}',
-                            style: GoogleFonts.jacquesFrancois(fontSize: 18),
-                          ),
-                          Text(
-                            'Job Discription: ${data['Job Discription'] ?? 'N/A'}',
-                            style: GoogleFonts.jacquesFrancois(fontSize: 18),
-                          ),
-                          Text(
-                            'Salary: ${data['Salary'] ?? 'N/A'}',
-                            style: GoogleFonts.jacquesFrancois(fontSize: 18),
-                          ),
-                          const SizedBox(height: 50),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 105),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => EditPage(
-                                      docID: widget.docID,
+                            const SizedBox(height: 50),
+                            Text(
+                              'Name: ${customerData['Name'] ?? 'N/A'}',
+                              style: GoogleFonts.jacquesFrancois(fontSize: 18),
+                            ),
+                            Text(
+                              'Email: ${customerData['Email'] ?? 'N/A'}',
+                              style: GoogleFonts.jacquesFrancois(fontSize: 18),
+                            ),
+                            Text(
+                              'Mobile: ${customerData['Mobile'] ?? 'N/A'}',
+                              style: GoogleFonts.jacquesFrancois(fontSize: 18),
+                            ),
+                            Text(
+                              'Age: ${customerData['Age'] ?? 'N/A'}',
+                              style: GoogleFonts.jacquesFrancois(fontSize: 18),
+                            ),
+                            Text(
+                              'Job Discription: ${customerData['Job Discription'] ?? 'N/A'}',
+                              style: GoogleFonts.jacquesFrancois(fontSize: 18),
+                            ),
+                            Text(
+                              'Salary: ${customerData['Salary'] ?? 'N/A'}',
+                              style: GoogleFonts.jacquesFrancois(fontSize: 18),
+                            ),
+                            const SizedBox(height: 50),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 105),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EditPage(
+                                        docID: widget.docID,
+                                        selectedSlider: widget.selectedSlider,
+                                      ),
                                     ),
+                                  );
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                    color: Colors.deepPurple,
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                );
-                              },
-                              child: Container(
-                                height: 50,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  color: Colors.deepPurple,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'Edit',
-                                    style: GoogleFonts.merienda(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
+                                  child: Center(
+                                    child: Text(
+                                      'Edit',
+                                      style: GoogleFonts.merienda(
+                                        color: Colors.white,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
+                            )
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible: widget.selectedSlider == 1,
+                    child: FutureBuilder<DocumentSnapshot>(
+                      future: FirebaseFirestore.instance
+                          .collection('company')
+                          .doc(widget.docID)
+                          .get(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text('Error : ${snapshot.error}'),
+                          );
+                        }
+                        if (!snapshot.hasData || !snapshot.data!.exists) {
+                          return const Center(
+                            child: Text('No Data Found'),
+                          );
+                        }
+
+                        final companyData =
+                            snapshot.data!.data() as Map<String, dynamic>;
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'doc ID : ${widget.docID}',
+                              style: GoogleFonts.jacquesFrancois(
+                                color: Colors.red,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          )
-                        ],
-                      );
-                    },
+                            const SizedBox(height: 50),
+                            Text(
+                              'Name: ${companyData['Company Name'] ?? 'N/A'}',
+                              style: GoogleFonts.jacquesFrancois(fontSize: 18),
+                            ),
+                            Text(
+                              'Email: ${companyData['Company Email'] ?? 'N/A'}',
+                              style: GoogleFonts.jacquesFrancois(fontSize: 18),
+                            ),
+                            Text(
+                              'Mobile: ${companyData['Company Mobile'] ?? 'N/A'}',
+                              style: GoogleFonts.jacquesFrancois(fontSize: 18),
+                            ),
+                            Text(
+                              'Age: ${companyData['Company Address'] ?? 'N/A'}',
+                              style: GoogleFonts.jacquesFrancois(fontSize: 18),
+                            ),
+                            Text(
+                              'Job Discription: ${companyData['Company Discription'] ?? 'N/A'}',
+                              style: GoogleFonts.jacquesFrancois(fontSize: 18),
+                            ),
+                            const SizedBox(height: 50),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 105),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EditPage(
+                                        docID: widget.docID,
+                                        selectedSlider: widget.selectedSlider,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                    color: Colors.deepPurple,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'Edit',
+                                      style: GoogleFonts.merienda(
+                                        color: Colors.white,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),

@@ -8,9 +8,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 class EditPage extends StatefulWidget {
   final String docID;
+  final int selectedSlider;
   const EditPage({
     super.key,
     required this.docID,
+    required this.selectedSlider,
   });
 
   @override
@@ -19,10 +21,15 @@ class EditPage extends StatefulWidget {
 
 class _EditPageState extends State<EditPage> {
   final FirestoreService firestoreService = FirestoreService();
-  final _formKey = GlobalKey<FormState>();
+  final _customerFormKey = GlobalKey<FormState>();
+  final _companyFormKey = GlobalKey<FormState>();
 
-  Future<DocumentSnapshot> getDocument(String docID) async {
+  Future<DocumentSnapshot> getCustomerDocument(String docID) async {
     return FirebaseFirestore.instance.collection('users').doc(docID).get();
+  }
+
+  Future<DocumentSnapshot> getCompanyDocument(String docID) async {
+    return FirebaseFirestore.instance.collection('company').doc(docID).get();
   }
 
   late TextEditingController _nameController;
@@ -31,6 +38,19 @@ class _EditPageState extends State<EditPage> {
   late TextEditingController _ageController;
   late TextEditingController _jobDiscriptionController;
   late TextEditingController _salaryController;
+  late TextEditingController _companyNameController;
+  late TextEditingController _companyEmailController;
+  late TextEditingController _companyNumberController;
+  late TextEditingController _companyAddressController;
+  late TextEditingController _companyDiscriptionController;
+
+  selected() {
+    if (widget.selectedSlider == 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   @override
   void initState() {
@@ -41,7 +61,13 @@ class _EditPageState extends State<EditPage> {
     _ageController = TextEditingController();
     _jobDiscriptionController = TextEditingController();
     _salaryController = TextEditingController();
-    _loadData();
+    _companyNameController = TextEditingController();
+    _companyEmailController = TextEditingController();
+    _companyNumberController = TextEditingController();
+    _companyAddressController = TextEditingController();
+    _companyDiscriptionController = TextEditingController();
+
+    selected() ? _loadCustomerData() : _loadCompanyData();
   }
 
   @override
@@ -52,21 +78,35 @@ class _EditPageState extends State<EditPage> {
     _mobileController.dispose();
     _jobDiscriptionController.dispose();
     _salaryController.dispose();
+    _companyNameController.dispose();
+    _companyEmailController.dispose();
+    _companyNumberController.dispose();
+    _companyAddressController.dispose();
+    _companyDiscriptionController.dispose();
 
     super.dispose();
   }
 
-  Future<void> _loadData() async {
-    DocumentSnapshot doc = await getDocument(widget.docID);
-    _nameController.text = doc['Name'];
-    _eMailController.text = doc['Email'];
-    _mobileController.text = doc['Mobile'];
-    _ageController.text = doc['Age'];
-    _jobDiscriptionController.text = doc['Job Discription'];
-    _salaryController.text = doc['Salary'];
+  Future<void> _loadCustomerData() async {
+    DocumentSnapshot customerDoc = await getCustomerDocument(widget.docID);
+    _nameController.text = customerDoc['Name'];
+    _eMailController.text = customerDoc['Email'];
+    _mobileController.text = customerDoc['Mobile'];
+    _ageController.text = customerDoc['Age'];
+    _jobDiscriptionController.text = customerDoc['Job Discription'];
+    _salaryController.text = customerDoc['Salary'];
   }
 
-  updateData() async {
+  Future<void> _loadCompanyData() async {
+    DocumentSnapshot companyDoc = await getCompanyDocument(widget.docID);
+    _companyNameController.text = companyDoc['Company Name'];
+    _companyEmailController.text = companyDoc['Company Email'];
+    _companyNumberController.text = companyDoc['Company Mobile'];
+    _companyAddressController.text = companyDoc['Company Address'];
+    _companyDiscriptionController.text = companyDoc['Company Discription'];
+  }
+
+  updateUserData() async {
     Map<String, dynamic> updatedInfo = {
       'Name': _nameController.text,
       'Email': _eMailController.text,
@@ -93,15 +133,56 @@ class _EditPageState extends State<EditPage> {
     });
   }
 
+  updateCompanyData() async {
+    Map<String, dynamic> updatedInfo = {
+      'Company Name': _companyNameController.text,
+      'Company Email': _companyEmailController.text,
+      'Company Mobile': _companyNumberController.text,
+      'Company Address': _companyAddressController.text,
+      'Company Discription': _companyDiscriptionController.text,
+    };
+    await firestoreService
+        .updateCompany(
+      docID: widget.docID,
+      updatedInfo: updatedInfo,
+    )
+        .then((onValue) {
+      Navigator.pop(context);
+      Fluttertoast.showToast(
+        msg: 'The User has Updated Successfully',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: Colors.black54,
+        textColor: Colors.white,
+      );
+      Navigator.pop(context);
+    });
+  }
+
   confirmUpdateUser() {
-    if (_formKey.currentState?.validate() ?? false) {
+    if (_customerFormKey.currentState?.validate() ?? false) {
       // Process data if form is valid
       showDialog(
         context: context,
         builder: (context) {
           return DialogBox(
             dialog: 'Are You Sure, You wanna Update the existing user',
-            onClickSave: updateData,
+            onClickSave: updateUserData,
+          );
+        },
+      );
+    }
+  }
+
+  confirmUpdateCompany() {
+    if (_companyFormKey.currentState?.validate() ?? false) {
+      // Process data if form is valid
+      showDialog(
+        context: context,
+        builder: (context) {
+          return DialogBox(
+            dialog: 'Are You Sure, You wanna Update the existing user',
+            onClickSave: updateCompanyData,
           );
         },
       );
@@ -125,43 +206,49 @@ class _EditPageState extends State<EditPage> {
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                // nameTitle(),
-                nameTextField(),
-                // eMailTitle(),
-                eMailTextField(),
-                // numberTitle(),
-                numberTextField(),
-                // ageTitle(),
-                ageTextField(),
-                // jobDiscriptionTitle(),
-                jobDiscriptionTextField(),
-                // salaryTitle(),
-                salaryTextField(),
-                const SizedBox(height: 15),
-                updateUser(),
-              ],
-            ),
+          child: Column(
+            children: [
+              Visibility(
+                visible: widget.selectedSlider == 0,
+                child: Form(
+                  key: _customerFormKey,
+                  child: Column(
+                    children: [
+                      nameTextField(),
+                      eMailTextField(),
+                      numberTextField(),
+                      ageTextField(),
+                      jobDiscriptionTextField(),
+                      salaryTextField(),
+                      const SizedBox(height: 15),
+                      updateUser(),
+                    ],
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: widget.selectedSlider == 1,
+                child: Form(
+                  key: _companyFormKey,
+                  child: Column(
+                    children: [
+                      companyNameTextField(),
+                      companyEmailTextField(),
+                      companyNumberTextField(),
+                      companyAddressTextField(),
+                      companyDiscriptionTextField(),
+                      const SizedBox(height: 15),
+                      updateCompany(),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
-
-  // nameTitle() {
-  //   return const Row(
-  //     mainAxisAlignment: MainAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         'Name',
-  //         style: TextStyle(fontSize: 16),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   nameTextField() {
     return Padding(
@@ -184,18 +271,6 @@ class _EditPageState extends State<EditPage> {
       ),
     );
   }
-
-  // eMailTitle() {
-  //   return const Row(
-  //     mainAxisAlignment: MainAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         'E-Mail',
-  //         style: TextStyle(fontSize: 16),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   eMailTextField() {
     return Padding(
@@ -220,18 +295,6 @@ class _EditPageState extends State<EditPage> {
       ),
     );
   }
-
-  // numberTitle() {
-  //   return const Row(
-  //     mainAxisAlignment: MainAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         'Number',
-  //         style: TextStyle(fontSize: 16),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   numberTextField() {
     return Padding(
@@ -258,18 +321,6 @@ class _EditPageState extends State<EditPage> {
     );
   }
 
-  // ageTitle() {
-  //   return const Row(
-  //     mainAxisAlignment: MainAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         'Age',
-  //         style: TextStyle(fontSize: 16),
-  //       ),
-  //     ],
-  //   );
-  // }
-
   ageTextField() {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 10),
@@ -295,18 +346,6 @@ class _EditPageState extends State<EditPage> {
     );
   }
 
-  // jobDiscriptionTitle() {
-  //   return const Row(
-  //     mainAxisAlignment: MainAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         'Job Discription',
-  //         style: TextStyle(fontSize: 16),
-  //       ),
-  //     ],
-  //   );
-  // }
-
   jobDiscriptionTextField() {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 10),
@@ -328,18 +367,6 @@ class _EditPageState extends State<EditPage> {
       ),
     );
   }
-
-  // salaryTitle() {
-  //   return const Row(
-  //     mainAxisAlignment: MainAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         'Salary',
-  //         style: TextStyle(fontSize: 16),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   salaryTextField() {
     return Padding(
@@ -369,6 +396,142 @@ class _EditPageState extends State<EditPage> {
   updateUser() {
     return GestureDetector(
       onTap: confirmUpdateUser,
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.deepPurple,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Center(
+          child: Text(
+            'U P D A T E',
+            style: GoogleFonts.merienda(
+              color: Colors.white,
+              fontSize: 17,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  companyNameTextField() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 10),
+      child: TextFormField(
+        controller: _companyNameController,
+        decoration: InputDecoration(
+          labelText: 'Company Name',
+          labelStyle: GoogleFonts.merienda(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'This field is required';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  companyEmailTextField() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 10),
+      child: TextFormField(
+        controller: _companyEmailController,
+        decoration: InputDecoration(
+          labelText: 'Company Email',
+          labelStyle: GoogleFonts.merienda(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        validator: (val) {
+          if (val == null || !EmailValidator.validate(val)) {
+            return 'Please enter a valid email';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  companyNumberTextField() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 10),
+      child: TextFormField(
+        keyboardType: TextInputType.number,
+        controller: _companyNumberController,
+        decoration: InputDecoration(
+          labelText: 'Company Number',
+          labelStyle: GoogleFonts.merienda(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'This field is required';
+          } else if (int.tryParse(value) == null) {
+            return 'The entered value should be a number';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  companyAddressTextField() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 10),
+      child: TextFormField(
+        controller: _companyAddressController,
+        decoration: InputDecoration(
+          labelText: 'Company Address',
+          labelStyle: GoogleFonts.merienda(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'This field is required';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  companyDiscriptionTextField() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 10),
+      child: TextFormField(
+        controller: _companyDiscriptionController,
+        decoration: InputDecoration(
+          labelText: 'Company Discription',
+          labelStyle: GoogleFonts.merienda(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'This field is required';
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  updateCompany() {
+    return GestureDetector(
+      onTap: confirmUpdateCompany,
       child: Container(
         height: 50,
         decoration: BoxDecoration(

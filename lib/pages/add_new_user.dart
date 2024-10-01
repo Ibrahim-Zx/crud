@@ -137,9 +137,21 @@ class _AddNewUserState extends State<AddNewUser> {
             children: [
               Row(
                 children: [
-                  Expanded(
+                  Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width / 2 - 25,
+                    decoration: BoxDecoration(
+                      color: Colors.deepPurple[100],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     child: ListTile(
-                      title: const Text('Customer Info'),
+                      title: const Text(
+                        'User',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       leading: Radio(
                           value: 1,
                           groupValue: selectedRadio,
@@ -148,9 +160,22 @@ class _AddNewUserState extends State<AddNewUser> {
                           }),
                     ),
                   ),
-                  Expanded(
+                  const SizedBox(width: 5),
+                  Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width / 2 - 20,
+                    decoration: BoxDecoration(
+                      color: Colors.deepPurple[100],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     child: ListTile(
-                      title: const Text('Company Info'),
+                      title: const Text(
+                        'Company',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       leading: Radio(
                           value: 2,
                           groupValue: selectedRadio,
@@ -195,7 +220,7 @@ class _AddNewUserState extends State<AddNewUser> {
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -402,7 +427,9 @@ class _AddNewUserState extends State<AddNewUser> {
           ),
         ),
         validator: (val) {
-          EmailValidator.validate(val!) ? null : 'Please enter valid e-mail';
+          if (val == null || !EmailValidator.validate(val)) {
+            return 'Please enter a valid email';
+          }
           return null;
         },
       ),
