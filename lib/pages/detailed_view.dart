@@ -24,32 +24,32 @@ class DetailedView extends StatefulWidget {
 class _DetailedViewState extends State<DetailedView> {
   final FirestoreService firestoreService = FirestoreService();
 
-  confirmDeleteCustomer() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return DialogBox(
-            dialog: 'Are You Sure, You wanna Delete this user',
-            onClickSave: () async {
-              await firestoreService
-                  .deleteCustomer(docID: widget.docID)
-                  .then((onValue) {
-                Navigator.pop(context);
-              });
+  // confirmDeleteCustomer() {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return DialogBox(
+  //           dialog: 'Are You Sure, You wanna Delete this user',
+  //           onClickSave: () async {
+  //             await firestoreService
+  //                 .deleteCustomer(docID: widget.docID)
+  //                 .then((onValue) {
+  //               Navigator.pop(context);
+  //             });
 
-              Fluttertoast.showToast(
-                msg: 'The User has Deleted Successfully',
-                toastLength: Toast.LENGTH_LONG,
-                gravity: ToastGravity.SNACKBAR,
-                backgroundColor: Colors.black54,
-                textColor: Colors.white,
-              );
+  //             Fluttertoast.showToast(
+  //               msg: 'The User has Deleted Successfully',
+  //               toastLength: Toast.LENGTH_LONG,
+  //               gravity: ToastGravity.SNACKBAR,
+  //               backgroundColor: Colors.black54,
+  //               textColor: Colors.white,
+  //             );
 
-              Navigator.of(context).pop();
-            },
-          );
-        });
-  }
+  //             Navigator.of(context).pop();
+  //           },
+  //         );
+  //       });
+  // }
 
   confirmDeleteCompany() {
     showDialog(
@@ -110,15 +110,15 @@ class _DetailedViewState extends State<DetailedView> {
               )),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: confirmDeleteCustomer,
-        label: Text(
-          'Delete',
-          style: GoogleFonts.merienda(),
-        ),
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: confirmDeleteCustomer,
+      //   label: Text(
+      //     'Delete',
+      //     style: GoogleFonts.merienda(),
+      //   ),
+      //   backgroundColor: Colors.deepPurple,
+      //   foregroundColor: Colors.white,
+      // ),
       body: Center(
         child: Padding(
           padding:
