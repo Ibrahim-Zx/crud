@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crud/main.dart';
 import 'package:crud/pages/add_new_user.dart';
 import 'package:crud/pages/detailed_view.dart';
 import 'package:crud/services/firestore.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MainPage extends StatefulWidget {
@@ -115,12 +117,13 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const AddNewUser(),
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => const AddNewUser(),
+          //   ),
+          // );
+          context.go('/mainPage/addNewUserPage');
         },
         label: Text(
           'Add New User',

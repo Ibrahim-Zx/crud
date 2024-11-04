@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,20 +16,46 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
 
   Future signIn() async {
+    // if (!EmailValidator.validate(_eMailController.text)) {
+    //   Fluttertoast.showToast(
+    //     msg: 'Please enter a valid email address.',
+    //     toastLength: Toast.LENGTH_LONG,
+    //     gravity: ToastGravity.SNACKBAR,
+    //     backgroundColor: Colors.black54,
+    //     textColor: Colors.white,
+    //   );
+    //   return;
+    // }
+
     try {
+      // showDialog(
+      //   context: context,
+      //   builder: (context) {
+      //     return const Center(
+      //       child: CircularProgressIndicator(
+      //         color: Colors.deepPurple,
+      //       ),
+      //     );
+      //   },
+      // );
+
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _eMailController.text.toString(),
-        password: _passwordController.text.toString(),
+        email: _eMailController.text,
+        password: _passwordController.text,
       );
-    } on FirebaseAuthException catch (ex) {
+      // Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      // Navigator.pop(context);
       String msg;
 
-      if (ex.code == 'invalid-credential') {
-        msg = 'The entered e-mail or password is wrong';
-      } else if (ex.code == 'invalid-email') {
-        msg = 'Invalid e-mail address, Give a proper e-mail address';
+      if (e.code == 'user-not-found') {
+        msg = 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        msg = 'Incorrect password.';
+      } else if (e.code == 'invalid-email') {
+        msg = 'The email address is badly formatted.';
       } else {
-        msg = ex.code;
+        msg = 'Error: ${e.code}';
       }
 
       Fluttertoast.showToast(
@@ -69,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 30),
 
-                //Username Textfield
+                //Username Text
                 const Row(
                   children: [
                     Text(
@@ -79,6 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
 
+                //email textBox
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20, top: 5),
                   child: TextField(
@@ -95,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
-                //Password Textbox
+                //Password Text
                 const Row(
                   children: [
                     Text(
@@ -105,6 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
 
+                //password textBox
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20, top: 5),
                   child: TextField(

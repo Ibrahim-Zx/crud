@@ -91,34 +91,44 @@ class _DetailedViewState extends State<DetailedView> {
           ),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DetailedView(
-                      docID: widget.docID,
-                      selectedSlider: widget.selectedSlider,
-                    ),
-                  ),
-                );
-              },
-              icon: const Icon(
-                Icons.replay_outlined,
-                color: Colors.white,
-              )),
-        ],
+        // actions: [
+        //   IconButton(
+        //       onPressed: () {
+        //         Navigator.push(
+        //           context,
+        //           MaterialPageRoute(
+        //             builder: (context) => DetailedView(
+        //               docID: widget.docID,
+        //               selectedSlider: widget.selectedSlider,
+        //             ),
+        //           ),
+        //         );
+        //       },
+        //       icon: const Icon(
+        //         Icons.replay_outlined,
+        //         color: Colors.white,
+        //       )),
+        // ],
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: confirmDeleteCustomer,
-      //   label: Text(
-      //     'Delete',
-      //     style: GoogleFonts.merienda(),
-      //   ),
-      //   backgroundColor: Colors.deepPurple,
-      //   foregroundColor: Colors.white,
-      // ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EditPage(
+                docID: widget.docID,
+                selectedSlider: widget.selectedSlider,
+              ),
+            ),
+          );
+        },
+        label: Text(
+          'Edit',
+          style: GoogleFonts.merienda(),
+        ),
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
+      ),
       body: Center(
         child: Padding(
           padding:
@@ -203,42 +213,42 @@ class _DetailedViewState extends State<DetailedView> {
                               'Salary: ${customerData['Salary'] ?? 'N/A'}',
                               style: GoogleFonts.jacquesFrancois(fontSize: 18),
                             ),
-                            const SizedBox(height: 50),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 105),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => EditPage(
-                                        docID: widget.docID,
-                                        selectedSlider: widget.selectedSlider,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  height: 50,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    color: Colors.deepPurple,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Edit',
-                                      style: GoogleFonts.merienda(
-                                        color: Colors.white,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
+                            // const SizedBox(height: 50),
+                            // Padding(
+                            //   padding:
+                            //       const EdgeInsets.symmetric(horizontal: 105),
+                            //   child: GestureDetector(
+                            //     onTap: () {
+                            //       Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (context) => EditPage(
+                            //             docID: widget.docID,
+                            //             selectedSlider: widget.selectedSlider,
+                            //           ),
+                            //         ),
+                            //       );
+                            //     },
+                            //     child: Container(
+                            //       height: 50,
+                            //       width: 100,
+                            //       decoration: BoxDecoration(
+                            //         color: Colors.deepPurple,
+                            //         borderRadius: BorderRadius.circular(10),
+                            //       ),
+                            //       child: Center(
+                            //         child: Text(
+                            //           'Edit',
+                            //           style: GoogleFonts.merienda(
+                            //             color: Colors.white,
+                            //             fontSize: 17,
+                            //             fontWeight: FontWeight.bold,
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         );
                       },
@@ -304,42 +314,42 @@ class _DetailedViewState extends State<DetailedView> {
                               'Job Discription: ${companyData['Company Discription'] ?? 'N/A'}',
                               style: GoogleFonts.jacquesFrancois(fontSize: 18),
                             ),
-                            const SizedBox(height: 50),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 105),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => EditPage(
-                                        docID: widget.docID,
-                                        selectedSlider: widget.selectedSlider,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  height: 50,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    color: Colors.deepPurple,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Edit',
-                                      style: GoogleFonts.merienda(
-                                        color: Colors.white,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
+                            // const SizedBox(height: 50),
+                            // Padding(
+                            //   padding:
+                            //       const EdgeInsets.symmetric(horizontal: 105),
+                            //   child: GestureDetector(
+                            //     onTap: () {
+                            //       Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (context) => EditPage(
+                            //             docID: widget.docID,
+                            //             selectedSlider: widget.selectedSlider,
+                            //           ),
+                            //         ),
+                            //       );
+                            //     },
+                            //     child: Container(
+                            //       height: 50,
+                            //       width: 100,
+                            //       decoration: BoxDecoration(
+                            //         color: Colors.deepPurple,
+                            //         borderRadius: BorderRadius.circular(10),
+                            //       ),
+                            //       child: Center(
+                            //         child: Text(
+                            //           'Edit',
+                            //           style: GoogleFonts.merienda(
+                            //             color: Colors.white,
+                            //             fontSize: 17,
+                            //             fontWeight: FontWeight.bold,
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         );
                       },

@@ -5,6 +5,7 @@ import 'package:crud/util/dialog_box.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddNewUser extends StatefulWidget {
@@ -129,6 +130,24 @@ class _AddNewUserState extends State<AddNewUser> {
             color: Colors.white,
           ),
         ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+        ),
+        // leading: IconButton(
+        //   onPressed: () {
+        //     GoRouter.of(context).pop();
+        //   },
+        //   icon: const Icon(
+        //     Icons.arrow_back,
+        //     color: Colors.white,
+        //   ),
+        // ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
